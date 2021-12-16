@@ -39,12 +39,12 @@ The graphite_exporter accepts metrics in the [tagged carbon format](https://grap
 
 ## Metric Mapping and Configuration
 
-**Please note there has been a breaking change in configuration after version 0.2.0.  The YAML style config from [statsd_exporter](https://github.com/prometheus/statsd_exporter) is now used.  See conversion instructions below**
+**Please note there has been a breaking change in configuration after version 0.2.0. The YAML style config from [statsd_exporter](https://github.com/prometheus/statsd_exporter) is now used. See conversion instructions below**
 
 ### YAML Config
 
 The graphite_exporter can be configured to translate specific dot-separated
-graphite metrics into labeled Prometheus metrics via YAML configuration file.  This file shares syntax and logic with [statsd_exporter](https://github.com/prometheus/statsd_exporter).  Please follow the statsd_exporter documentation for usage information.  However, graphite_exporter does not support *all* parsing features at this time.  Any feature based on the 'timer_type' option will not function.  Otherwise, regex matching, groups, match/drop behavior, should work as expected.
+graphite metrics into labeled Prometheus metrics via YAML configuration file. This file shares syntax and logic with [statsd_exporter](https://github.com/prometheus/statsd_exporter). Please follow the statsd_exporter documentation for usage information. However, graphite_exporter does not support _all_ parsing features at this time. Any feature based on the 'timer_type' option will not function. Otherwise, regex matching, groups, match/drop behavior, should work as expected.
 
 Metrics that don't match any mapping in the configuration file are translated
 into Prometheus metrics without any labels and with names in which every
@@ -59,25 +59,25 @@ An example mapping configuration:
 
 ```yaml
 mappings:
-- match: test.dispatcher.*.*.*
-  name: dispatcher_events_total
-  labels:
-    action: $2
-    job: test_dispatcher
-    outcome: $3
-    processor: $1
-- match: '*.signup.*.*'
-  name: signup_events_total
-  labels:
-    job: ${1}_server
-    outcome: $3
-    provider: $2
-- match: 'servers\.(.*)\.networking\.subnetworks\.transmissions\.([a-z0-9-]+)\.(.*)'
-  match_type: regex
-  name: 'servers_networking_transmissions_${3}'
-  labels: 
-    hostname: ${1}
-    device: ${2}
+  - match: test.dispatcher.*.*.*
+    name: dispatcher_events_total
+    labels:
+      action: $2
+      job: test_dispatcher
+      outcome: $3
+      processor: $1
+  - match: "*.signup.*.*"
+    name: signup_events_total
+    labels:
+      job: ${1}_server
+      outcome: $3
+      provider: $2
+  - match: 'servers\.(.*)\.networking\.subnetworks\.transmissions\.([a-z0-9-]+)\.(.*)'
+    match_type: regex
+    name: "servers_networking_transmissions_${3}"
+    labels:
+      hostname: ${1}
+      device: ${2}
 ```
 
 This would transform these example graphite metrics into Prometheus metrics as
@@ -99,7 +99,7 @@ servers.rack-003-server-c4de.networking.subnetworks.transmissions.eth0.failure.m
 
 ### Conversion from legacy configuration
 
-If you have an existing config file using the legacy mapping syntax, you may use [statsd-exporter-convert](https://github.com/bakins/statsd-exporter-convert) to update to the new YAML based syntax.  Here we convert the old example synatx:
+If you have an existing config file using the legacy mapping syntax, you may use [statsd-exporter-convert](https://github.com/bakins/statsd-exporter-convert) to update to the new YAML based syntax. Here we convert the old example synatx:
 
 ```console
 $ go get -u github.com/bakins/statsd-exporter-convert
@@ -175,8 +175,6 @@ Graphite Exporter supports TLS and basic authentication. This enables better con
 
 To use TLS and/or basic authentication, you need to pass a configuration file using the `--web.config.file` parameter. The format of the file is described
 [in the exporter-toolkit repository](https://github.com/prometheus/exporter-toolkit/blob/master/docs/web-configuration.md).
-
-
 
 [circleci]: https://circleci.com/gh/prometheus/graphite_exporter
 [hub]: https://hub.docker.com/r/prom/graphite-exporter/
